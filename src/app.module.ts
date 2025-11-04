@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 import { WebhookModule } from './webhooks/webhook.module';
 import { HealthModule } from './health/health.module';
 import { MqttModule } from './mqtt/mqtt.module';
-import { HealthDataPoint } from './health/entities/health-data-point.entity';
 import { getDatabaseConfig } from './config/database.config';
 import { validateConfig } from './config/app.config';
 

@@ -8,11 +8,15 @@ import {
   HttpStatus,
   ValidationPipe,
   Logger,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { HealthService } from './health.service';
 import { CreateHealthDataDto } from './dto/create-health-data.dto';
+import { ApiKeyGuard, ApiKeyRequest } from '../auth/guards/api-key.guard';
 
 @Controller('health')
+@UseGuards(ApiKeyGuard)
 export class HealthController {
   private readonly logger = new Logger(HealthController.name);
 
@@ -21,11 +25,13 @@ export class HealthController {
   @Post('android-data')
   @HttpCode(HttpStatus.OK)
   async processAndroidData(
+    @Request() req: ApiKeyRequest,
     @Body(new ValidationPipe({ transform: true }))
     createHealthDataDto: CreateHealthDataDto,
   ) {
+    const apiKey = req.apiKey;
     this.logger.log(
-      `Received ${createHealthDataDto.dataPoints.length} health data points from Android`,
+      `Health webhook call from API key: ${apiKey.name ?? '-'} (ID: ${apiKey.id}) - Received ${createHealthDataDto.dataPoints.length} health data points from Android`,
     );
 
     const results =

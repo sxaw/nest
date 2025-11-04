@@ -11,37 +11,11 @@ import { UseGuards } from '@nestjs/common';
 import { ApiKeyGuard, ApiKeyRequest } from '../auth/guards/api-key.guard';
 import { Public } from '../auth/guards/public.decorator';
 
-interface AndroidWebhookData {
-  id?: string;
-  [key: string]: any;
-}
-
 type BatchWebhookData = Array<any>;
 
 @Controller('webhooks')
 @UseGuards(ApiKeyGuard)
 export class WebhookController {
-  @Post('android-data')
-  @HttpCode(HttpStatus.OK)
-  handleAndroidData(
-    @Request() req: ApiKeyRequest,
-    @Body() data: AndroidWebhookData,
-  ) {
-    const apiKey = req.apiKey;
-    console.log(
-      `Webhook call from API key: ${apiKey.name ?? '-'} (ID: ${apiKey.id})`,
-    );
-
-    // TODO: Process webhook data (placeholder logic)
-    return {
-      status: 'success',
-      message: 'Data received successfully',
-      timestamp: new Date().toISOString(),
-      dataId: data.id || 'unknown',
-      // TODO: Add actual business logic here
-    };
-  }
-
   @Get('status')
   @Public()
   getStatus() {
