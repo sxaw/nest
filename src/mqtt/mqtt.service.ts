@@ -86,7 +86,7 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
       const message = JSON.stringify(payload);
       const publishOptions: IClientPublishOptions = {
         qos: 1,
-        retain: false,
+        retain: true, // Use retained messages by default for state persistence
         ...options,
       };
 
@@ -94,7 +94,7 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
         if (error) {
           this.logger.error(`Failed to publish to topic ${topic}:`, error);
         } else {
-          this.logger.debug(`Successfully published to topic ${topic}`);
+          this.logger.debug(`Successfully published to topic ${topic} (retained: ${publishOptions.retain})`);
         }
       });
     } catch (error) {
@@ -110,5 +110,14 @@ export class MqttService implements OnModuleInit, OnModuleDestroy {
   ): Promise<void> {
     const topic = `health/user/${userId}/${metricType.toLowerCase()}`;
     await this.publish(topic, dataPoint);
+  }
+
+  async publishNonRetained(
+    topic: string,
+    payload: any,
+    options?: mqtt.IClientPublishOptions,
+  ): Promise<void> {
+    // Helper method for publishing non-retained messages when needed
+    return this.publish(topic, payload, { ...options, retain: false });
   }
 }

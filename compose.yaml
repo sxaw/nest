@@ -53,6 +53,34 @@ services:
     networks:
       - nest_webhook_network
 
+  mqtt-explorer:
+    image: faustofjnascimento/mqtt-explorer:latest
+    container_name: nest_webhook_mqtt_explorer
+    restart: unless-stopped
+    ports:
+      - '4000:4000'
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - MQTT_WS_PORT=9001
+    depends_on:
+      - mosquitto
+    networks:
+      - nest_webhook_network
+
+  mqtt-web-client:
+    build:
+      context: ./mqtt-client/react-mqtt-explorer
+      dockerfile: Dockerfile
+    container_name: nest_webhook_mqtt_client
+    restart: unless-stopped
+    ports:
+      - '8888:80'
+    depends_on:
+      - mosquitto
+    networks:
+      - nest_webhook_network
+
 volumes:
   postgres_data:
   pgadmin_data:
