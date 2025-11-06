@@ -56,13 +56,28 @@ const AppContent = () => {
         {/* Main Content Area */}
         <MainLayout>
           {selectedTab === 'explorer' && (
-            <div className="space-y-6">
+            <div
+              className="space-y-6"
+              id="explorer-panel"
+              role="tabpanel"
+              aria-labelledby="explorer-tab"
+              tabIndex={0}
+            >
               <StatisticsPanel />
               <ExplorerPanel />
             </div>
           )}
 
-          {selectedTab === 'analytics' && <AnalyticsPanel />}
+          {selectedTab === 'analytics' && (
+            <div
+              id="analytics-panel"
+              role="tabpanel"
+              aria-labelledby="analytics-tab"
+              tabIndex={0}
+            >
+              <AnalyticsPanel />
+            </div>
+          )}
         </MainLayout>
       </div>
     </div>

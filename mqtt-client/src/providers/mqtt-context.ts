@@ -5,6 +5,7 @@ import type { MQTTMessage } from './MqttProvider';
 export interface MQTTContextType {
   client: mqtt.MqttClient | null;
   isConnected: boolean;
+  isConnecting: boolean;
   messages: MQTTMessage[];
   connectionStatus: string;
   autoSubscribed: boolean;

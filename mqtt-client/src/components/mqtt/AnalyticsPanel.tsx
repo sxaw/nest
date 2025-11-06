@@ -121,17 +121,17 @@ const AnalyticsPanel: React.FC = () => {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="border-2 border-blue-100 dark:border-blue-900/20">
+          <Card className="border-2 border-info/30">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-full">
-                  <MessageSquare className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <div className="p-3 bg-info/10 rounded-full">
+                  <MessageSquare className="h-6 w-6 text-info" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
                     Total Messages
                   </p>
-                  <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                  <p className="text-3xl font-bold text-info">
                     {analytics.totalMessages.toLocaleString()}
                   </p>
                 </div>
@@ -139,17 +139,17 @@ const AnalyticsPanel: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-green-100 dark:border-green-900/20">
+          <Card className="border-2 border-success/30">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-full">
-                  <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+                <div className="p-3 bg-success/10 rounded-full">
+                  <TrendingUp className="h-6 w-6 text-success" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
                     Active Topics
                   </p>
-                  <p className="text-3xl font-bold text-green-600 dark:text-green-400">
+                  <p className="text-3xl font-bold text-success">
                     {analytics.uniqueTopics}
                   </p>
                 </div>
@@ -157,17 +157,17 @@ const AnalyticsPanel: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-orange-100 dark:border-orange-900/20">
+          <Card className="border-2 border-warning/30">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-orange-100 dark:bg-orange-900/20 rounded-full">
-                  <Clock className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                <div className="p-3 bg-warning/10 rounded-full">
+                  <Clock className="h-6 w-6 text-warning" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
                     Recent (1 min)
                   </p>
-                  <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">
+                  <p className="text-3xl font-bold text-warning">
                     {analytics.recentMessages}
                   </p>
                 </div>
@@ -175,11 +175,11 @@ const AnalyticsPanel: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-purple-100 dark:border-purple-900/20">
+          <Card className="border-2 border-accent/30">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-full">
-                  <Activity className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                <div className="p-3 bg-accent/10 rounded-full">
+                  <Activity className="h-6 w-6 text-accent" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
@@ -188,8 +188,8 @@ const AnalyticsPanel: React.FC = () => {
                   <p
                     className={`text-3xl font-bold ${
                       isConnected
-                        ? 'text-green-600 dark:text-green-400'
-                        : 'text-red-600 dark:text-red-400'
+                        ? 'text-success'
+                        : 'text-destructive'
                     }`}
                   >
                     {isConnected ? 'Active' : 'Offline'}

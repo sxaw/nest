@@ -84,8 +84,8 @@ const SubscriptionPanel: React.FC = () => {
               {autoSubscribed && (
                 <div className="flex items-center justify-between p-2 border rounded-lg bg-accent/10 border-accent/30">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-sm font-medium text-accent">#</span>
-                    <Badge variant="secondary" className="text-xs bg-accent/20 text-accent border-accent/30 font-medium">
+                    <span className="font-mono text-sm font-medium text-accent-foreground">#</span>
+                    <Badge variant="secondary" className="text-xs bg-accent/20 text-accent-foreground border-accent/30 font-medium">
                       QoS 1 (Auto)
                     </Badge>
                   </div>

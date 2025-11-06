@@ -17,6 +17,7 @@ interface MQTTProviderProps {
 export const MQTTProvider = ({ children }: MQTTProviderProps) => {
   const [client, setClient] = useState<mqtt.MqttClient | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
   const [messages, setMessages] = useState<MQTTMessage[]>([]);
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
   const [autoSubscribed, setAutoSubscribed] = useState(false);
@@ -27,6 +28,9 @@ export const MQTTProvider = ({ children }: MQTTProviderProps) => {
         client.end();
         setClient(null);
       }
+
+      setIsConnecting(true);
+      setConnectionStatus('Connecting...');
 
       const brokerUrl =
         broker.startsWith('ws://') || broker.startsWith('wss://')
@@ -49,6 +53,7 @@ export const MQTTProvider = ({ children }: MQTTProviderProps) => {
 
         mqttClient.on('connect', () => {
           console.log('MQTT client connected successfully');
+          setIsConnecting(false);
           setIsConnected(true);
           setConnectionStatus('Connected');
           setClient(mqttClient);
@@ -69,6 +74,7 @@ export const MQTTProvider = ({ children }: MQTTProviderProps) => {
 
         mqttClient.on('error', (err) => {
           console.error('MQTT connection error:', err);
+          setIsConnecting(false);
           setIsConnected(false);
           setConnectionStatus(`Error: ${err.message}`);
           setClient(null);
@@ -76,6 +82,7 @@ export const MQTTProvider = ({ children }: MQTTProviderProps) => {
 
         mqttClient.on('close', () => {
           console.log('MQTT client connection closed');
+          setIsConnecting(false);
           setIsConnected(false);
           setConnectionStatus('Disconnected');
           setClient(null);
@@ -117,11 +124,33 @@ export const MQTTProvider = ({ children }: MQTTProviderProps) => {
   const disconnect = useCallback(() => {
     if (client) {
       console.log('Disconnecting MQTT client...');
-      client.end();
-      setClient(null);
+      setIsConnecting(false);
       setIsConnected(false);
-      setConnectionStatus('Disconnected');
-      setAutoSubscribed(false);
+      setConnectionStatus('Disconnecting...');
+
+      // Force disconnect and clean up
+      try {
+        client.end(true, {}, () => {
+          console.log('MQTT client disconnected successfully');
+          setClient(null);
+          setConnectionStatus('Disconnected');
+          setAutoSubscribed(false);
+        });
+
+        // Fallback cleanup in case end callback doesn't fire
+        setTimeout(() => {
+          if (client) {
+            setClient(null);
+            setConnectionStatus('Disconnected');
+            setAutoSubscribed(false);
+          }
+        }, 1000);
+      } catch (error) {
+        console.error('Error during disconnect:', error);
+        setClient(null);
+        setConnectionStatus('Disconnected');
+        setAutoSubscribed(false);
+      }
     }
   }, [client]);
 
@@ -190,6 +219,7 @@ export const MQTTProvider = ({ children }: MQTTProviderProps) => {
   const value: MQTTContextType = {
     client,
     isConnected,
+    isConnecting,
     messages,
     connectionStatus,
     autoSubscribed,
